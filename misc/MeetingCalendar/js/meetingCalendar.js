@@ -14,7 +14,8 @@ MeetingCalendar.meetingData = (function(){
     constants = {
     	width: 600,
     	left: 0,
-    	pixel: 2
+    	pixel: 2,
+    	timeStart: 9
     }
     
     //private
@@ -40,6 +41,17 @@ MeetingCalendar.meetingData = (function(){
         	obj['width'] = constants['width'];
         },
         
+        //generates random hexcode
+        _getRandomHexCode: function(){
+        	var code = Math.floor(Math.random()*16777216).toString(16);
+        	if(code.length < 6){
+        		while(code.length < 6){
+        			code = 0 + code;
+        		}
+        	}
+        	return code;
+        },
+        
         //returns html string which can be used by any client to draw dom on browser
         _drawMeetingCalendar: function(dataArr){
         	if(dataArr && dataArr.length){
@@ -62,7 +74,7 @@ MeetingCalendar.meetingData = (function(){
             	for(i; i< startSortedArr.length; i++){
             		//final width = width/widthDivisor
             		//final left = (leftCalc * width)/widthDivisor
-            		finalHtml += '<div class="row" style="top:'+ startSortedArr[i]['top'] +'px; height:'+ startSortedArr[i]['height'] +'px; width: '+ startSortedArr[i]['width']/startSortedArr[i]['widthDivisor'] +'px; background: #'+ Math.floor(Math.random()*16777215).toString(16) +'; left: '+ ((startSortedArr[i]['leftCalc']* constants['width'])/startSortedArr[i]['widthDivisor']) +'px">'+ startSortedArr[i]['id'] +'</div>';
+            		finalHtml += '<div class="row" style="top:'+ startSortedArr[i]['top'] +'px; height:'+ startSortedArr[i]['height'] +'px; width: '+ startSortedArr[i]['width']/startSortedArr[i]['widthDivisor'] +'px; background: #'+ fn._getRandomHexCode() +'; left: '+ ((startSortedArr[i]['leftCalc']* constants['width'])/startSortedArr[i]['widthDivisor']) +'px"><div class="text">'+ startSortedArr[i]['id'] +'</div></div>';
 				}
             	
             	//returns final html string
