@@ -89,9 +89,9 @@
 		                start: 490,
 		                end: 510
 		            }
-		        ]  */
-		        MeetingCalendar.meetingData.getMeetingPosition(data);
-		        var htmlData = MeetingCalendar.meetingData.drawMeetingCalendar(data);
+		        ]   */
+		        var calArr = MeetingCalendar.meetingData.getMeetingPosition(data);
+		        var htmlData = MeetingCalendar.meetingData.drawMeetingCalendar(calArr);
 		        document.getElementsByClassName('axis')[0].innerHTML = htmlData;
 	        })();
         </script>

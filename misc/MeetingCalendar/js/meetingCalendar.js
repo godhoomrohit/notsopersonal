@@ -26,19 +26,36 @@ MeetingCalendar.meetingData = (function(){
     	_getMeetingPosition: function(dataArr){
             if(dataArr && dataArr.length){
 				var i = 0;
-            	for(i; i< dataArr.length; i++){
-            		//passing object, any change in property will be made to input array as it's passed by reference
-					fn._calculateCssProps(dataArr[i]);
+				var startSortedArr = '', endSortedArr = '';
+	        	
+	        	//creating two array out of input array. next 3 steps are done to avoid object reference property 
+				//i.e. any changes made to startSortedArr/endSortedArr will not be reflected to input array
+				var tempArr = JSON.stringify(dataArr);
+				startSortedArr = JSON.parse(tempArr);
+				endSortedArr = JSON.parse(tempArr);
+				
+				//sorting array based on start/end
+				fn._sortByStart(startSortedArr);
+				fn._sortByEnd(endSortedArr);
+				
+				//finding overlapping range
+				fn._findOverlappingRange(startSortedArr, endSortedArr);
+				
+				for(i; i< startSortedArr.length; i++){
+					startSortedArr[i]['top'] = startSortedArr[i]['start'] * constants['pixel'];
+					startSortedArr[i]['height'] = (startSortedArr[i]['end'] - startSortedArr[i]['start'])  * constants['pixel'];
+					startSortedArr[i]['left'] = (startSortedArr[i]['leftCalc'] * constants['width']) / startSortedArr[i]['widthDivisor'];
+					startSortedArr[i]['width'] = constants['width'] / startSortedArr[i]['widthDivisor'];
 				}
-            }   
+	        	
+	        	return startSortedArr;
+            } 
+            return [];
         },
         
         //returns css property based on problem constants
-        _calculateCssProps: function(obj){
-        	obj['top'] = obj['start'] * constants['pixel'];
-        	obj['height'] = (obj['end'] - obj['start'])  * constants['pixel'];
-        	obj['left'] = constants['left'];
-        	obj['width'] = constants['width'];
+        _calculateCssProps: function(dataArr){
+        	
         },
         
         //generates random hexcode
@@ -53,28 +70,15 @@ MeetingCalendar.meetingData = (function(){
         },
         
         //returns html string which can be used by any client to draw dom on browser
-        _drawMeetingCalendar: function(dataArr){
-        	if(dataArr && dataArr.length){
-				var i = 0, finalHtml = '', startSortedArr = '', endSortedArr = '';
-				
-				//creating two array out of input array. next 3 steps are done to avoid object reference property 
-				//i.e. any changes made to startSortedArr/endSortedArr will not be reflected to input array
-				var tempArr = JSON.stringify(dataArr);
-				startSortedArr = JSON.parse(tempArr);
-				endSortedArr = JSON.parse(tempArr);
-				
-				//sorting array based on start/end
-				fn._sortByStart(startSortedArr);
-				fn._sortByEnd(endSortedArr);
-				
-				//finding overlapping range
-				fn._findOverlappingRange(startSortedArr, endSortedArr);
+        _drawMeetingCalendar: function(startSortedArr){
+        	if(startSortedArr && startSortedArr.length){
+				var i = 0, finalHtml = '';
 				
 				//creating html
             	for(i; i< startSortedArr.length; i++){
             		//final width = width/widthDivisor
             		//final left = (leftCalc * width)/widthDivisor
-            		finalHtml += '<div class="row" style="top:'+ startSortedArr[i]['top'] +'px; height:'+ startSortedArr[i]['height'] +'px; width: '+ startSortedArr[i]['width']/startSortedArr[i]['widthDivisor'] +'px; background: #'+ fn._getRandomHexCode() +'; left: '+ ((startSortedArr[i]['leftCalc']* constants['width'])/startSortedArr[i]['widthDivisor']) +'px"><div class="text">'+ startSortedArr[i]['id'] +'</div></div>';
+            		finalHtml += '<div class="row" style="top:'+ startSortedArr[i]['top'] +'px; height:'+ startSortedArr[i]['height'] +'px; width: '+ startSortedArr[i]['width'] +'px; background: #'+ fn._getRandomHexCode() +'; left: '+ startSortedArr[i]['left'] +'px"><div class="text">'+ startSortedArr[i]['id'] +'</div></div>';
 				}
             	
             	//returns final html string
