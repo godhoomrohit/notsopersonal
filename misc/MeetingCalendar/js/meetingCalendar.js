@@ -53,11 +53,6 @@ MeetingCalendar.meetingData = (function(){
             return [];
         },
         
-        //returns css property based on problem constants
-        _calculateCssProps: function(dataArr){
-        	
-        },
-        
         //generates random hexcode
         _getRandomHexCode: function(){
         	var code = Math.floor(Math.random()*16777216).toString(16);
