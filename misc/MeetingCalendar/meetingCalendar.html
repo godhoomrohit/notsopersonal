@@ -31,8 +31,30 @@
         <script src="./js/meetingCalendar.js" ></script>
         <script>
 	        (function(){
-	        	var data = [
+	        	 var data = [
 		            {
+		                id: 1,
+		                start: 60,
+		                end: 150
+		            },
+		            {
+		                id: 2,
+		                start: 540,
+		                end: 570
+		            },
+		            {
+		                id: 3,
+		                start: 555,
+		                end: 600
+		            },
+		            {
+		                id: 4,
+		                start: 585,
+		                end: 660
+		            }
+		        ] 
+		        /* var data = [
+		        	{
 		                id: 1,
 		                start: 120,
 		                end: 150
@@ -41,7 +63,8 @@
 		                id: 2,
 		                start: 120,
 		                end: 150
-		            },{
+		            },
+		            {
 		                id: 3,
 		                start: 90,
 		                end: 150
@@ -66,7 +89,7 @@
 		                start: 490,
 		                end: 510
 		            }
-		        ]
+		        ]  */
 		        MeetingCalendar.meetingData.getMeetingPosition(data);
 		        var htmlData = MeetingCalendar.meetingData.drawMeetingCalendar(data);
 		        document.getElementsByClassName('axis')[0].innerHTML = htmlData;

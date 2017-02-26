@@ -86,48 +86,44 @@ MeetingCalendar.meetingData = (function(){
         //the logic for finding range:width
         // 1. keep two sorted object array based on start and end
         // 2. start comparing element of startSortedArr with endSortedArr
-        // 3. keep increasing cnt if startSortedArr element is less than endSortedArr else decrease it
-        // 4. also keep track of count by which i pointer is moving - xMovement
-        // 5. if cnt == 0 means overlapping range is over, so find the widthDivisor
+        // 3. keep increasing startSortedArrPointer if startSortedArr element is less than endSortedArr else increase endSortedArrPointer
+        // 4. if startSortedArrPointer == endSortedArrPointer, means no more overlapping
         // i.e. id there are 4 overlapping time range, widthDivisor should be 4
         _findOverlappingRange: function(startSortedArr, endSortedArr){
         	var startLen = startSortedArr.length, endLen = endSortedArr.length, i = 0, j = 0;
-        	var cnt = 0, xMovement = 0;
+        	var startSortedArrPointer = 0, endSortedArrPointer = 0;
         	
         	while(i < startLen && j < endLen){
         		if(startSortedArr[i]['start'] < endSortedArr[j]['end']){
-        			startSortedArr[i]['leftCalc'] = cnt;
-        			cnt++;
+        			startSortedArr[i]['leftCalc'] = startSortedArrPointer;
+        			startSortedArrPointer++;
         			i++;
-        			if(xMovement < cnt){
-        				xMovement = cnt;
-        			}
         		}
         		else{
-        			j++;
-        			cnt--;
-        			
-        			if(cnt === 0){
-        				for(var k = (i - xMovement); k < i; k++){
-                			startSortedArr[k]['widthDivisor'] = xMovement;
+        			j++
+        			endSortedArrPointer++;
+        			if(startSortedArrPointer === endSortedArrPointer){
+        				for(var k = (i - startSortedArrPointer); k < i; k++){
+                			startSortedArr[k]['widthDivisor'] = startSortedArrPointer;
         				}
-        				xMovement = 0;
+        				startSortedArrPointer = 0;
+        				endSortedArrPointer = 0;
         			}
         		}
         	}
         	
         	//if every element of startSortedArr > endSortedArr
-        	if(cnt === startLen){
+        	if(startSortedArrPointer === startLen){
         		for(var i = 0; i< startSortedArr.length; i++){
-        			startSortedArr[i]['widthDivisor'] = xMovement;
+        			startSortedArr[i]['widthDivisor'] = startSortedArrPointer;
         			startSortedArr[i]['leftCalc'] = i;
 				}
         	}
         	
         	//if some last element of startSortedArr > endSortedArr
-        	else if(cnt === xMovement && i === startLen){
-        		for(var k = (i - xMovement); k < i; k++){
-        			startSortedArr[k]['widthDivisor'] = xMovement;
+        	else if(i === startLen){
+        		for(var k = (i - (startSortedArrPointer)); k < i; k++){
+        			startSortedArr[k]['widthDivisor'] = startSortedArrPointer;
 				}
         	}
         },
