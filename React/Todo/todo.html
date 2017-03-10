@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Untitled Document</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+
+<body>
+
+    <div id="todoApp">
+        <h3>TODO</h3>
+        
+        <ul>
+            
+        </ul>
+        
+    </div>
+    
+    <script>
+        
+        var todolist = [
+            {
+                key: Date.now(),
+                value: 1
+            },
+            {
+                key: Date.now(),
+                value: 2
+            },
+            {
+                key: Date.now(),
+                value: 3
+            }
+        ];
+        
+        var todo = document.getElementById('todoApp'); 
+        var ul = todo.getElementsByTagName('ul')[0];
+        
+        ul.addEventListener('click', function(e){
+          aa = e;  
+            var type = e.target.className;
+            var val = parseInt(aa.target.getAttribute('index'));
+            
+            if(type == 'edit'){
+                
+            }
+            else if(type == 'delete'){
+                todolist = todolist.filter(function(v){
+                    return v.value != val;
+                });
+                
+                var finalHtml = '';
+                for(var i in todolist){
+                    finalHtml += '<li index="'+ todolist[i]['value'] +'">';
+                    finalHtml += todolist[i]['value'];
+                    finalHtml += '<span class="edit" index="'+ todolist[i]['value'] +'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EDIT</span>';
+                    finalHtml += '<span class="delete" index="'+ todolist[i]['value'] +'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DELETE</span></li>';
+                }
+                ul.innerHTML = finalHtml;
+            }
+        })
+        
+        var finalHtml = '';
+        for(var i in todolist){
+            finalHtml += '<li index="'+ todolist[i]['value'] +'">';
+            finalHtml += todolist[i]['value'];
+            finalHtml += '<span class="edit" index="'+ todolist[i]['value'] +'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EDIT</span>';
+            finalHtml += '<span class="delete" index="'+ todolist[i]['value'] +'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DELETE</span></li>';
+        }
+                
+        ul.innerHTML = finalHtml;
+        
+    </script>
+</body>
+</html>
