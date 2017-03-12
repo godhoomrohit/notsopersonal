@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Notes App</title>
+    
+  </head>
+  <body>
+    <div id="root"></div>
+      
+    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script type="text/babel">
+
+      class ToDoApp extends React.Component{
+  
+          constructor(props){
+            super(props);
+            this.state = {
+              items: [],
+              text: ''
+            };
+          }
+
+          handleSubmit(e){
+            e.preventDefault();
+            var newItem = {
+              value: this.state.text,
+              key: Date.now()
+            }
+
+            this.setState((prevState) => ({
+              items: prevState.items.concat(newItem),
+              text: ''
+            }))
+          }
+
+          handleChange(e){
+            this.setState({text: e.target.value})
+          }
+          
+           handleDelete(key){
+             this.setState({
+		            items: this.state.items.filter((item) => {
+			            return item.key !== key;
+		            })
+		     });
+           }
+
+          render(){
+            return(
+              <div>
+                <ToDoList items={this.state.items} handleDelete={this.handleDelete.bind(this)} />
+                <br /><br />
+                <form onSubmit={this.handleSubmit.bind(this)}>
+                  <input value={this.state.text} onChange={this.handleChange.bind(this)} placeholder="Note Text..."  />
+                  <br />
+                  <input type="submit" value="Add Note" />
+                </form>
+              </div>
+            );
+          }
+        }
+        
+       class ToDoList extends React.Component{
+          
+          handleDelete(key){
+            this.props.handleDelete(key);
+          }
+          
+          render(){
+            return(
+               <ul>
+                  {this.props.items.map(item => (
+                    <li key={item.key} onClick={this.handleDelete.bind(this, item.key)}>{item.value} <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DELETE</span></li>
+                  ))}
+              </ul>
+            );
+          }
+        }
+        
+      ReactDOM.render(
+        <ToDoApp />,
+        document.getElementById('root')
+      );
+
+    </script>
+  </body>
+</html>
