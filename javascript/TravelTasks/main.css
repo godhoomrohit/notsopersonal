@@ -1,0 +1,29 @@
+.mainContainer{
+    border: 1px solid;
+    padding: 10px;
+}
+
+.component{
+    display: inline-block;
+    width: 45%;
+    border: 1px solid;
+    margin: 10px;
+}
+
+.task{
+    margin-bottom: 10px;
+    border: 1px solid;
+    padding: 10px;
+    position: relative;
+}
+
+button{
+    margin: 10px 0;
+}
+
+#trashComp{
+    border: 2px solid red;
+    height: 100px;
+    text-align: center;
+    color: red;
+}
